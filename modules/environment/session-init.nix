@@ -6,6 +6,11 @@ with lib;
 
 let
   cfg = config.environment;
+  profilePath =
+    if config.nix.settings.use-xdg-base-directories then 
+      "${config.user.home}/.local/state/nix/profile"
+    else
+      "${config.user.home}/.nix-profile";
 
   export = n: v: "export ${n}=\"${toString v}\"";
 
@@ -25,7 +30,7 @@ let
       [ -n "$__NOD_SESS_INIT_SOURCED" ] && return
       export __NOD_SESS_INIT_SOURCED=1
 
-      . "${config.user.home}/.nix-profile/etc/profile.d/nix.sh"
+      . "${profilePath}/etc/profile.d/nix.sh"
 
       # workaround for nix 2.4, see https://github.com/NixOS/nixpkgs/issues/149791
       ${addToNixPath "${config.user.home}/.nix-defexpr/channels"}
@@ -33,8 +38,8 @@ let
       ${addToNixPath "nixpkgs=${config.user.home}/.nix-defexpr/channels/nixpkgs/"}
 
       ${optionalString (config.home-manager.config != null) ''
-        if [ -e "${config.user.home}/.nix-profile/etc/profile.d/hm-session-vars.sh" ]; then
-          . "${config.user.home}/.nix-profile/etc/profile.d/hm-session-vars.sh"
+        if [ -e "${profilePath}/etc/profile.d/hm-session-vars.sh" ]; then
+          . "${profilePath}/etc/profile.d/hm-session-vars.sh"
         fi
       ''}
 

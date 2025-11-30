@@ -6,6 +6,11 @@ with lib;
 
 let
   cfg = config.environment;
+  profilePath =
+    if config.nix.settings.use-xdg-base-directories then 
+      "${config.user.home}/.local/state/nix/profile"
+    else
+      "${config.user.home}/.nix-profile";
 in
 
 {
@@ -44,7 +49,7 @@ in
   config = {
 
     build.activation.installPackages = ''
-      if [[ -e "${config.user.home}/.nix-profile/manifest.json" ]]; then
+      if [[ -e "${profilePath}/manifest.json" ]]; then
         # manual removal and installation as two non-atomical steps is required
         # because of https://github.com/NixOS/nix/issues/6349
 

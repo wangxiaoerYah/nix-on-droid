@@ -6,7 +6,11 @@ with lib;
 
 let
   cfg = config.home-manager;
-
+  profilePath =
+    if config.nix.settings.use-xdg-base-directories then 
+      "${config.user.home}/.local/state/nix/profile"
+    else
+      "${config.user.home}/.nix-profile";
   extendedLib = import (home-manager-path + "/modules/lib/stdlib-extended.nix") lib;
 
   hmModule = types.submoduleWith {
@@ -125,7 +129,7 @@ in
     # https://github.com/nix-community/home-manager/blob/0006da1381b87844c944fe8b925ec864ccf19348/modules/home-environment.nix#L414
     # Fortunately, it's not that hard to us to workaround with just a symlink.
     environment.etc = mkIf cfg.useUserPackages {
-      "profiles/per-user/${config.user.userName}".source = "${config.user.home}/.nix-profile";
+      "profiles/per-user/${config.user.userName}".source = "${profilePath}";
     };
 
   };
