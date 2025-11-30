@@ -130,6 +130,13 @@ in
       };
     };
 
+     settings.use-xdg-base-directories = mkOption {
+        type = types.bool;
+        default = true;
+        description = "use-xdg-base-directories";
+      };
+    };
+
   };
 
 
@@ -142,6 +149,7 @@ in
           sandbox = false
           substituters = ${concatStringsSep " " cfg.substituters}
           trusted-public-keys = ${concatStringsSep " " cfg.trustedPublicKeys}
+          use-xdg-base-directories = ${cfg.settings.use-xdg-base-directories}
           ${cfg.extraOptions}
         '';
 

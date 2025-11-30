@@ -12,6 +12,11 @@ let
         "${config.user.shell}${config.user.shell.passthru.shellPath}"
       else builtins.abort "Derivation without shell path found at `user.shell`. Use the path to the exact binary."
     else config.user.shell;
+  profilePath =
+    if config.nix.settings.use-xdg-base-directories then 
+      "${config.user.home}/.local/state/nix/profile"
+    else
+      "${config.user.home}/.nix-profile";
 in
 
 writeText "login-inner" ''
@@ -71,7 +76,7 @@ writeText "login-inner" ''
         ${nixCmd} build --no-link --file "<nix-on-droid>" nix-on-droid
         $(${nixCmd} path-info --file "<nix-on-droid>" nix-on-droid)/bin/nix-on-droid switch --file $DEFAULT_CONFIG
 
-        . "${config.user.home}/.nix-profile/etc/profile.d/nix-on-droid-session-init.sh"
+        . "${profilePath}/etc/profile.d/nix-on-droid-session-init.sh"
 
         echo "Copying default Nix-on-Droid config..."
         mkdir --parents $HOME/.config/nixpkgs
@@ -114,7 +119,7 @@ writeText "login-inner" ''
         echo "Installing first Nix-on-Droid generation..."
         ${nixCmd} run ${config.build.flake.nix-on-droid} -- switch --flake ${config.user.home}/.config/nix-on-droid
 
-        . "${config.user.home}/.nix-profile/etc/profile.d/nix-on-droid-session-init.sh"
+        . "${profilePath}/etc/profile.d/nix-on-droid-session-init.sh"
 
       fi
 
@@ -141,7 +146,7 @@ writeText "login-inner" ''
     fi
   ''}
 
-  . "${config.user.home}/.nix-profile/etc/profile.d/nix-on-droid-session-init.sh"
+  . "${profilePath}/etc/profile.d/nix-on-droid-session-init.sh"
 
   ${lib.optionalString config.build.initialBuild ''
     exec /usr/bin/env bash  # otherwise it'll be a limited bash that came with Nix
