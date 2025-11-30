@@ -148,7 +148,7 @@ in
           sandbox = false
           substituters = ${concatStringsSep " " cfg.substituters}
           trusted-public-keys = ${concatStringsSep " " cfg.trustedPublicKeys}
-          use-xdg-base-directories = ${cfg.settings.use-xdg-base-directories}
+          use-xdg-base-directories = ${lib.boolToString cfg.settings.use-xdg-base-directories}
           ${cfg.extraOptions}
         '';
 
