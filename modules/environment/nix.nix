@@ -128,7 +128,6 @@ in
         default = "";
         description = "Extra config to be appended to <filename>/etc/nix/nix.conf</filename>.";
       };
-    };
 
      settings.use-xdg-base-directories = mkOption {
         type = types.bool;
