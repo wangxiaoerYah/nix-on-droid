@@ -6,11 +6,13 @@ with lib;
 
 let
   cfg = config.home-manager;
+
   profilePath =
-    if config.nix.settings.use-xdg-base-directories then 
+    if config.nix.settings.use-xdg-base-directories then
       "${config.user.home}/.local/state/nix/profile"
     else
       "${config.user.home}/.nix-profile";
+
   extendedLib = import (home-manager-path + "/modules/lib/stdlib-extended.nix") lib;
 
   hmModule = types.submoduleWith {

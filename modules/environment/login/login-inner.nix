@@ -13,7 +13,7 @@ let
       else builtins.abort "Derivation without shell path found at `user.shell`. Use the path to the exact binary."
     else config.user.shell;
   profilePath =
-    if config.nix.settings.use-xdg-base-directories then 
+    if config.nix.settings.use-xdg-base-directories then
       "${config.user.home}/.local/state/nix/profile"
     else
       "${config.user.home}/.nix-profile";

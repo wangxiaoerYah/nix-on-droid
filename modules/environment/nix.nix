@@ -129,7 +129,7 @@ in
         description = "Extra config to be appended to <filename>/etc/nix/nix.conf</filename>.";
       };
 
-     settings.use-xdg-base-directories = mkOption {
+      settings.use-xdg-base-directories = mkOption {
         type = types.bool;
         default = true;
         description = "use-xdg-base-directories";

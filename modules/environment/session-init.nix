@@ -7,7 +7,7 @@ with lib;
 let
   cfg = config.environment;
   profilePath =
-    if config.nix.settings.use-xdg-base-directories then 
+    if config.nix.settings.use-xdg-base-directories then
       "${config.user.home}/.local/state/nix/profile"
     else
       "${config.user.home}/.nix-profile";
